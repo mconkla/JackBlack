@@ -1,0 +1,75 @@
+package GameObjects;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Dealer {
+	
+	
+	KartenDeck usedDeck = new KartenDeck();
+	Player Spieler = new Player();
+	
+	public int handWert;
+	public List<SpielKarte> Hand = new ArrayList<SpielKarte>();
+	
+	public Dealer() {
+		mischen();
+		kartenAusteilen();
+		kartenAusteilen();
+	}
+	
+	public void mischen() { // Vertauscht 100 mal zwei Stellen im Array
+		for (int mischen = 0; mischen < 100; mischen++) {
+			einmalmisch();
+		}
+		
+	}
+	
+
+	private void einmalmisch() { // Vertauscht zwei Stellen im Array
+		int firstRandom = randomizer();
+		int secondRandom = randomizer();
+
+		SpielKarte safe = usedDeck.Spielkarten.get(firstRandom);
+		usedDeck.Spielkarten.set(firstRandom,usedDeck.Spielkarten.get(secondRandom));
+		usedDeck.Spielkarten.set(secondRandom,safe);
+	}
+
+	private int randomizer() { // generiert eine Karten an der Stelle zwischen 1 und 52
+		int random = (int) (Math.random() * 100);
+		if (random > 51) {
+			return random - 51;
+		} else {
+			return random;
+		}
+	}
+	
+	public void kartenAusteilen() {
+			
+		int topCard = usedDeck.Spielkarten.size()-1;
+		int secondCard = usedDeck.Spielkarten.size()-2;
+		
+		Spieler.Hand.add(usedDeck.Spielkarten.get(topCard));//Spieler kriegt oberste Karte
+		usedDeck.Spielkarten.remove(topCard);
+		
+
+		this.Hand.add(usedDeck.Spielkarten.get(secondCard));//Spieler kriegt oberste Karte
+		usedDeck.Spielkarten.remove(secondCard);
+		
+	}
+	
+	public void karteGeben() {
+		//TODO einzelne Karten ausgeben
+	}
+	
+	public void showDealerHand() {
+		System.out.print("\n\nDEALER:");
+		for (int Index = 0; Index < this.Hand.size(); Index++) {
+			this.handWert += this.Hand.get(Index).WERT;
+			System.out.printf("\n%s - %s\n",this.Hand.get(Index).FARBE,this.Hand.get(Index).NAME);
+		}
+	}
+	
+
+	
+}
